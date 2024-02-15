@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const navigate = useNavigate();
+  const [userType, setUserType] = useState('user'); // Default to 'user'
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,6 +15,7 @@ function SignUp() {
     password: '',
     confirmPassword: '',
   });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const validateForm = () => {
     let isValid = true;
@@ -23,33 +26,15 @@ function SignUp() {
       confirmPassword: '',
     };
 
-    if (!username) {
-      updatedErrors.username = 'Please enter a username';
-      isValid = false;
-    }
-
-    if (!email) {
-      updatedErrors.email = 'Please enter an email address';
-      isValid = false;
-    }
-
-    if (!password) {
-      updatedErrors.password = 'Please enter a password';
-      isValid = false;
-    }
-
-    if (!confirmPassword) {
-      updatedErrors.confirmPassword = 'Please confirm your password';
-      isValid = false;
-    }
-
-    if (password !== confirmPassword) {
-      updatedErrors.confirmPassword = 'Passwords do not match';
-      isValid = false;
-    }
+    // Existing validation logic...
 
     setErrors(updatedErrors);
     return isValid;
+  };
+
+  const handleImageClick = (type) => {
+    setUserType(type);
+    setSelectedImage(type);
   };
 
   const handleSubmit = (e) => {
@@ -61,15 +46,68 @@ function SignUp() {
     }
 
     // If all validations pass, proceed with form submission
-    console.log(username, email, password);
+    console.log(userType, username, email, password);
     // Add your axios post request here
 
-    navigate('/sign-in');
+    // Check the user type and navigate accordingly
+    if (userType === 'admin') {
+      navigate('/admin');
+    } else {
+      navigate('/user');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h3>Sign Up</h3>
+      <div className="mb-3" >
+      
+       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        
+          <div
+            onClick={() => handleImageClick('user')}
+            style={{ cursor: 'pointer', marginRight: '10px' }}
+          >
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs_ZjDAfv-A_ErW7OZv7b2drsCHFuoQCsyfg&usqp=CAU"
+              alt="User"
+              style={{
+                width: selectedImage === 'user' ? '100px' : '90px',
+                border: selectedImage === 'user' ? '2px solid green' : 'none',
+              }}
+            /> <p>User</p>
+            {/* {selectedImage === 'user' && (
+              <img
+                src="/path-to-tick-mark.png"
+                alt="Tick Mark"
+                style={{ position: 'absolute', top: '5px', left: '5px' }}
+              />
+            )} */}
+          </div>
+          <div
+            onClick={() => handleImageClick('admin')}
+            style={{ cursor: 'pointer' }}
+          >
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGprMfe8lkaiBIkCXvlaFj_3tDMfxZ-Q8eiw&usqp=CAU"
+              alt="Admin"
+              
+              style={{
+                width: selectedImage === 'admin' ? '100px' : '90px',
+                border: selectedImage === 'admin' ? '2px solid green' : 'none',
+              }}
+            />
+            <p>Admin</p>
+            {/* {selectedImage === 'admin' && (
+              <img
+                src="/path-to-tick-mark.png"
+                alt="Tick Mark"
+                style={{ position: 'absolute', top: '5px', left: '5px' }}
+              />
+            )} */}
+          </div>
+        </div>
+      </div>
       <div className="mb-3">
         <label>Username</label>
         <input

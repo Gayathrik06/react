@@ -6,6 +6,8 @@ import Login from './components/login.component'
 import SignUp from './components/signup.component'
 import Forgot from './components/forgot.component'
 import Forpas from './components/for-pass'
+import Admin from './components/admin'
+import User from './components/user'
 function App() {
 
   return (
@@ -39,6 +41,8 @@ function App() {
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/forgot" element={<Forgot />} />
               <Route path="/for-pass" element={<Forpas />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/user" element={<User />} />
             </Routes>
           </div>
         </div>
